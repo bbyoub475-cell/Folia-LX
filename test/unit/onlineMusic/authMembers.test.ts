@@ -36,6 +36,11 @@ const AUTH_MEMBERS: Record<string, string[]> = {
         'cancelLogin', 'checkLogin', 'createQr', 'describeLoginFailure', 'getLoginDiagnostics', 'getLoginStatus',
         'getLoginTexts', 'getLoginTtlMs', 'logout', 'signInRanOut', 'startLogin',
     ],
+    // No account: "signing in" connects to the LX Music app on this computer, with nothing to open.
+    lxmusic: [
+        'cancelLogin', 'checkLogin', 'getLoginStatus', 'getLoginTexts', 'getLoginTtlMs', 'logout', 'openLoginPage',
+        'opensLoginPageItself', 'startLogin',
+    ],
 };
 
 describe('the sign-in members of each built-in platform', () => {

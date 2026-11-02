@@ -1491,6 +1491,8 @@ export default {
     "loginTitleQq": "Scan to sign in to QQ Music",
     "loginTitleQishui": "Sign in to Qishui Music with Douyin",
     "loginNoteQishui": "Scan with the Douyin app and confirm authorization",
+    "loginTitleLxmusic": "Connect LX Music on this computer",
+    "loginNoteLxmusic": "Folia plays with the custom source imported in LX Music and shows LX Music's song lists; no account is needed",
     "loginTitleBodian": "Scan with Bodian Music",
     "loginNoteBodian": "Scan this code with the Bodian Music app and confirm sign-in",
     "loginTitleYtm": "Sign in to YouTube Music",

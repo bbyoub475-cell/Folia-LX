@@ -72,6 +72,8 @@ const { createQishuiApiBridge } = require('./qishui/qishuiApiBridge.cjs');
 const { createQishuiMediaPolicy } = require('./qishui/mediaCors.cjs');
 const { createBodianApiBridge } = require('./bodian/bodianApiBridge.cjs');
 const { createBodianMediaPolicy } = require('./bodian/mediaCors.cjs');
+const { createLxMusicApiBridge } = require('./lxmusic/lxmusicApiBridge.cjs');
+const { createLxMusicMediaPolicy } = require('./lxmusic/mediaCors.cjs');
 const { createYtmApiBridge } = require('./ytm/ytmApiBridge.cjs');
 const { createYtmSandbox } = require('./ytm/sandbox.cjs');
 const { YTM_AUDIO_PRIVILEGED_SCHEME, YTM_AUDIO_SCHEME } = require('./ytm/audio.cjs');
@@ -367,6 +369,15 @@ const bodianApiBridge = createBodianApiBridge({ store, safeStorage,
     request.on('response', onResponse);
     return request;
   },
+});
+// LX Music: runs the custom source the listener imported in LX Music on this computer, in a hidden
+// sandboxed window, and reads LX Music's song lists; nothing of LX Music's is written. Its requests
+// go out through Node's fetch, as LX Music's own go out through Node (needle): no cookies, and the
+// headers the sources ask for (Referer, Origin) are sent as they are.
+const lxmusicMediaPolicy = createLxMusicMediaPolicy();
+const lxmusicApiBridge = createLxMusicApiBridge({ store, app, BrowserWindow, session, ipcMain,
+  fetchFn: (url, options) => fetch(url, options),
+  onAudioSource: url => lxmusicMediaPolicy.register(url),
 });
 // YouTube Music talks to Google from its own network partition and without a cookie jar: the
 // account is carried by a request header, and stored cookies would tie the guest sessions to it.
@@ -3692,7 +3703,7 @@ function setupCorsBypassHandlers() {
         hostname === 'kugou.com' ||
         hostname.endsWith('.kugou.com') ||
         // Bodian audio and cover CDNs may omit CORS headers needed by Web Audio and canvas/WebGL.
-        bodianMediaPolicy.allows(details) || qishuiMediaPolicy.allows(details);
+        bodianMediaPolicy.allows(details) || qishuiMediaPolicy.allows(details) || lxmusicMediaPolicy.allows(details);
     } catch (error) {
       isTargetDomain = false;
     }
@@ -3707,7 +3718,7 @@ function setupCorsBypassHandlers() {
     callback({ cancel: false, responseHeaders });
   });
 
-  ses.webRequest.onBeforeRedirect(details => { bodianMediaPolicy.followRedirect(details); qishuiMediaPolicy.followRedirect(details); });
+  ses.webRequest.onBeforeRedirect(details => { bodianMediaPolicy.followRedirect(details); qishuiMediaPolicy.followRedirect(details); lxmusicMediaPolicy.followRedirect(details); });
 
   ses.webRequest.onErrorOccurred({ urls: ['*://*.kugou.com/*'] }, details => {
     const requestInfo = getKugouMediaRequestInfo(details);
@@ -5911,6 +5922,9 @@ function createWindow(options = {}) {
         }
       }
       displaySleepBlocker.stop();
+      // The LX Music custom source runs in a hidden window of its own: it goes with the page, or it
+      // would keep the app from quitting (and macOS from making a new window on activate).
+      lxmusicApiBridge.close();
       // HiFi: mpv plays on in its own process, with no page left to pause it, move to the next
       // song or let the device go (macOS keeps the app running here). A window rebuild hands mpv
       // over to the new page and has replaced mainWindow before the old one closes, so this only
@@ -7075,6 +7089,12 @@ ipcMain.handle('bodian-api-request', (event, operation, params) => {
     return { ok: false, error: { code: 'unavailable', message: 'Untrusted Bodian request' } };
   }
   return bodianApiBridge.request(operation, params);
+});
+ipcMain.handle('lxmusic-api-request', (event, operation, params) => {
+  if (!isTrustedMainWindowContents(event.sender)) {
+    return { ok: false, error: { code: 'unavailable', message: 'Untrusted LX Music request' } };
+  }
+  return lxmusicApiBridge.request(operation, params);
 });
 ipcMain.handle('ytm-api-request', (event, operation, params) => {
   if (!isTrustedMainWindowContents(event.sender)) {

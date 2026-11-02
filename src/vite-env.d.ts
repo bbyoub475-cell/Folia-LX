@@ -948,6 +948,10 @@ declare global {
         operation: import('./services/onlineMusic/bodian/bodianTransport').BodianOperation,
         params?: import('./services/onlineMusic/bodian/bodianTransport').BodianParams,
       ) => Promise<import('./services/onlineMusic/bodian/bodianTransport').BodianBridgeResult>;
+      lxmusicRequest?: (
+        operation: import('./services/onlineMusic/lxmusic/lxmusicTransport').LxMusicOperation,
+        params?: Record<string, unknown>,
+      ) => Promise<import('./services/onlineMusic/lxmusic/lxmusicTransport').LxMusicBridgeResult>;
       ytmRequest: (
         operation: import('./services/onlineMusic/ytm/ytmTransport').YtmOperation,
         params?: import('./services/onlineMusic/ytm/ytmTransport').YtmParams,

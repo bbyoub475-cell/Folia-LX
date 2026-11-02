@@ -21,7 +21,7 @@ export const PLACE_KINDS = {
 export type PlaceKind = keyof typeof PLACE_KINDS;
 
 export interface PlatformNamePlace {
-    n: Partial<Record<'netease' | 'qq' | 'kugou' | 'bodian' | 'ytm' | 'spotify' | 'qishui', number>>;
+    n: Partial<Record<'netease' | 'qq' | 'kugou' | 'bodian' | 'ytm' | 'spotify' | 'qishui' | 'lxmusic', number>>;
     // The kind of the file's lines of code; its comment lines are counted as comments.
     kind: PlaceKind;
     // What the lines are, where the kind alone does not say it.
@@ -37,9 +37,10 @@ export const PLATFORM_NAME_PLACES: Record<string, PlatformNamePlace> = {
     'electron/backendLifecycle.cjs': { n: { netease: 1, qq: 1 }, kind: 'doc' },
     'electron/linuxPasswordStore.cjs': { n: { qq: 1, kugou: 1 }, kind: 'main' },
     'electron/loginBackendIpc.cjs': { n: { netease: 6, qq: 6 }, kind: 'main', why: 'the IPC channels of the two embedded backends and the table that finds a backend by its platform id' },
-    'electron/main.cjs': { n: { netease: 8, qq: 15, kugou: 25, bodian: 12, ytm: 23, spotify: 24, qishui: 10 }, kind: 'main', why: 'starts each platform\'s local service and bridge, its IPC channels, its media hosts; raised by the upstream merge 2026-10-17; spotify +1 for the list of bridges a quit waits for (2026-10-22)' },
+    'electron/lxmusic/sources.cjs': { n: { netease: 4, qq: 11, kugou: 8 }, kind: 'namesake', why: 'the sources LX Music searches and plays from (酷我、酷狗、QQ、网易云), reached as LX Music does, not through those platforms\' adapters' },
+    'electron/main.cjs': { n: { netease: 8, qq: 15, kugou: 25, bodian: 12, ytm: 23, spotify: 24, qishui: 10, lxmusic: 10 }, kind: 'main', why: 'starts each platform\'s local service and bridge, its IPC channels, its media hosts; raised by the upstream merge 2026-10-17; spotify +1 for the list of bridges a quit waits for (2026-10-22)' },
     'electron/networkRecorder.cjs': { n: { netease: 4, qq: 3 }, kind: 'main', why: 'the hosts by which a request is filed under the backend that sent it' },
-    'electron/preload.cjs': { n: { netease: 6, qq: 5, kugou: 2, bodian: 1, ytm: 1, spotify: 1, qishui: 1 }, kind: 'main', why: 'the bridge methods and IPC channels of each platform' },
+    'electron/preload.cjs': { n: { netease: 6, qq: 5, kugou: 2, bodian: 1, ytm: 1, spotify: 1, qishui: 1, lxmusic: 1 }, kind: 'main', why: 'the bridge methods and IPC channels of each platform' },
     'electron/stageApi.cjs': { n: { netease: 17 }, kind: 'main', why: 'the stage API: its lyric source type and its search through the local service' },
     'electron/tempDirEnvironment.cjs': { n: { netease: 1 }, kind: 'doc' },
     'src/App.tsx': { n: { netease: 6, kugou: 1 }, kind: 'question', why: 'mounts the hook that hands out one platform\'s account (useNeteaseLibrary); raised by the upstream merge 2026-10-17' },
@@ -96,9 +97,10 @@ export const PLATFORM_NAME_PLACES: Record<string, PlatformNamePlace> = {
     'src/services/onlineMusic/account/keptAfterRead.ts': { n: { qq: 1, kugou: 1, ytm: 1 }, kind: 'doc' },
     'src/services/onlineMusic/fmModes.ts': { n: { netease: 1 }, kind: 'doc' },
     'src/services/onlineMusic/loginSelfCheck.ts': { n: { netease: 1 }, kind: 'doc' },
+    'src/services/onlineMusic/lxmusic/lxmusicNormalize.ts': { n: { netease: 1, qq: 1, kugou: 1 }, kind: 'namesake', why: 'the names of the sources an LX Music song comes from' },
     'src/services/onlineMusic/omni.ts': { n: { netease: 5, kugou: 2 }, kind: 'doc' },
     'src/services/onlineMusic/providerAccountCache.ts': { n: { kugou: 1 }, kind: 'doc' },
-    'src/services/onlineMusic/providerRegistry.ts': { n: { netease: 2, qq: 2, kugou: 2, bodian: 2, ytm: 2, spotify: 4, qishui: 2 }, kind: 'list' },
+    'src/services/onlineMusic/providerRegistry.ts': { n: { netease: 2, qq: 2, kugou: 2, bodian: 2, ytm: 2, spotify: 4, qishui: 2, lxmusic: 2 }, kind: 'list' },
     'src/services/onlineMusic/qq/qqProvider.ts': { n: { kugou: 1 }, kind: 'doc' },
     'src/services/onlineMusic/qq/qqTransport.ts': { n: { netease: 1 }, kind: 'doc' },
     'src/services/onlineMusic/resourceCache.ts': { n: { netease: 2 }, kind: 'doc' },
@@ -139,7 +141,7 @@ export const PLATFORM_NAME_PLACES: Record<string, PlatformNamePlace> = {
     'src/utils/lyrics/types.ts': { n: { netease: 3 }, kind: 'lyric' },
     'src/utils/playerLikeAvailability.ts': { n: { qq: 1, bodian: 1 }, kind: 'doc' },
     'src/utils/stageClientDemo.ts': { n: { netease: 3 }, kind: 'stored', why: 'the stage API\'s lyric source type' },
-    'src/vite-env.d.ts': { n: { netease: 23, qq: 13, kugou: 5, bodian: 4, ytm: 4, spotify: 4, qishui: 4 }, kind: 'stored', why: 'the types of the preload bridge and of the stage API\'s lyric source; raised by the upstream merge 2026-10-17' },
+    'src/vite-env.d.ts': { n: { netease: 23, qq: 13, kugou: 5, bodian: 4, ytm: 4, spotify: 4, qishui: 4, lxmusic: 3 }, kind: 'stored', why: 'the types of the preload bridge and of the stage API\'s lyric source; raised by the upstream merge 2026-10-17' },
     'worker/index.ts': { n: { qq: 11 }, kind: 'main', why: 'routes the QQ backend' },
     'worker/lyric-proxy.ts': { n: { qq: 1, kugou: 1 }, kind: 'main', why: 'the hosts the lyric relay may reach' },
     'worker/qq.ts': { n: { qq: 32 }, kind: 'main', why: 'the worker entry of the QQ backend' },

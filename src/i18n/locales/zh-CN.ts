@@ -1491,6 +1491,8 @@ export default {
     "loginTitleQq": "扫码登录QQ音乐",
     "loginTitleQishui": "用抖音扫码登录汽水音乐",
     "loginNoteQishui": "请使用抖音 App 扫码并确认授权",
+    "loginTitleLxmusic": "连接这台电脑上的 LX Music",
+    "loginNoteLxmusic": "Folia 会用你在 LX Music 里导入的自定义源播放，并显示 LX Music 的歌单，不需要账号",
     "loginTitleBodian": "使用波点音乐 App 扫码",
     "loginNoteBodian": "打开波点音乐 App 扫描二维码并确认登录",
     "loginTitleYtm": "登录 YouTube Music",

@@ -1491,6 +1491,8 @@ export default {
     "loginTitleQq": "Quét mã đăng nhập QQ Music",
     "loginTitleQishui": "Đăng nhập Qishui Music bằng Douyin",
     "loginNoteQishui": "Quét mã bằng ứng dụng Douyin và xác nhận ủy quyền",
+    "loginTitleLxmusic": "Kết nối LX Music trên máy tính này",
+    "loginNoteLxmusic": "Folia phát bằng nguồn tùy chỉnh đã nhập trong LX Music và hiển thị danh sách bài hát của LX Music; không cần tài khoản",
     "loginTitleBodian": "Quét bằng Bodian Music",
     "loginNoteBodian": "Mở ứng dụng Bodian Music quét mã QR và xác nhận đăng nhập",
     "loginTitleYtm": "Đăng nhập YouTube Music",
