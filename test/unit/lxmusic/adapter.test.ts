@@ -33,7 +33,7 @@ describe('LX Music adapter', () => {
         request.mockResolvedValueOnce({ ok: true, data: { url: 'https://a/1.mp3', fetchedAt: 1, quality: 'high' } });
         const source = await lxmusicProvider.playback!.getAudioSource(normalizeLxMusicSong(info), 'high');
         expect(request).toHaveBeenCalledWith('audio', { musicInfo: info, quality: 'high' });
-        expect(source.url).toBe('https://a/1.mp3');
+        expect(source?.url).toBe('https://a/1.mp3');
     });
 
     it('parses line lyrics with their translation, and answers none rather than failing', async () => {

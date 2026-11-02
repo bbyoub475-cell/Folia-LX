@@ -88,7 +88,7 @@ describe('LX Music custom source data', () => {
 
 describe('the script\'s lx.request', () => {
     it('sends an object body as a form, as needle does, and JSON where the header asks for it', async () => {
-        const fetchFn = vi.fn(async () => new Response('{"ok":1}', { status: 200 }));
+        const fetchFn = vi.fn(async (_url: string, _init?: RequestInit) => new Response('{"ok":1}', { status: 200 }));
         await scriptHttp(fetchFn, 'https://a.example/x', { method: 'post', body: { a: 1 } });
         expect(fetchFn.mock.calls[0][1]).toMatchObject({ method: 'POST', body: 'a=1', headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
         await scriptHttp(fetchFn, 'https://a.example/x', { method: 'post', headers: { 'content-type': 'application/json' }, body: { a: 1 } });
